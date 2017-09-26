@@ -11,7 +11,19 @@ namespace HeritageCollection
         int m_NBVehicules;
         int m_MaxVehicules;
         Vehicule[] m_colVehicules;
-
+        static public int staticInt=500;
+        public static void Test()
+        {
+            Console.Write("This is static");
+        }
+        /*public Garage() //Pas bien pas faire ça
+        {
+            staticInt = 0;
+        }*/
+        static Garage()
+        {
+            staticInt = 0;
+        }
         public Garage(int maxVehicules, string site)
         {
             this.m_MaxVehicules = maxVehicules;
