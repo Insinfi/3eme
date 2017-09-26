@@ -14,7 +14,7 @@ namespace HeritageCollection
         static public int staticInt=500;
         public static void Test()
         {
-            Console.Write("This is static");
+            Console.WriteLine("This is static");
         }
         /*public Garage() //Pas bien pas faire ça
         {
@@ -30,8 +30,17 @@ namespace HeritageCollection
             this.m_site = site;
             this.m_NBVehicules = 0;
             this.m_colVehicules = new Vehicule[maxVehicules];
+            staticInt++;
         }
 
+
+        public Vehicule[] Collection
+        {
+            get
+            {
+                return m_colVehicules;
+            }
+        }
         public void AddVehicule(Vehicule vaj)
         {
             if (this.m_NBVehicules < this.m_MaxVehicules)
