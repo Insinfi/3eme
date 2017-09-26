@@ -32,5 +32,25 @@ namespace HeritageCollection
                 throw new Exception("Trop de véhicules");
             }
         }
+
+        public Vehicule this[string numchass]
+        {
+            get
+            {
+                foreach(Vehicule tmp in this.m_colVehicules)
+                {
+                    if (tmp._numeroChassis == numchass)
+                    {
+                        return tmp;
+                    }
+                }
+                throw new Exception("Numero de chassis absent");
+            }
+        }
+    }
+
+    class Garagetest : List<Vehicule>
+    {
+
     }
 }
