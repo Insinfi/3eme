@@ -1,0 +1,32 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        function SoumettreAjax() {
+            var data = $('#data').val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Traitement")'+"?Identite=" + data,
+                success: function (msg) {
+                    alert(msg);
+                }});
+        
+        }
+    </script>
+    <title>Index</title>
+</head>
+<body>
+    <form enctype="application/x-www-form-urlencoded" method="get" action="~/Home/Traitement">
+        <label name="nom">Nom :</label><input type="text" name="Identite" /><br />
+        <input type="submit" value="Envoie AJAX" onclick="SoumettreAjax()" />
+    </form>
+</body>
+</html>

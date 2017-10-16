@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Thread_is_love
 {
@@ -7,21 +9,21 @@ namespace Thread_is_love
     {
         static void Main(string[] args)
         {
-            for (int y = 0; y < 5; y++)
+            byte[] readBuffer;
+            var MyStream = File.OpenRead(@"C:\Program Files (x86)\Android\android-sdk\platforms\android-23\data\layoutlib.jar");
+            readBuffer = new byte[MyStream.Length];
+            MyStream.ReadAsync(readBuffer, 0, (int)MyStream.Length).ContinueWith(task =>
             {
-                Console.WriteLine("\n");
-                CompteBancaire MtCompte = new CompteBancaire(500);
-                int i = 20;
-                while (i >= 0)
+                if (task.Status == TaskStatus.RanToCompletion)
                 {
-                    Thread MyThread1 = new Thread(new ParameterizedThreadStart(MtCompte.Retrait));
-                    MyThread1.Name = string.Format("Thread:{0}", i);
-                    MyThread1.Start(45);
-                    i--;
+                    Console.WriteLine("{0} bytes lus avec succès", task.Result);
                 }
-                Console.WriteLine("Solde du compte {0}", MtCompte.Solde);
-                Console.ReadKey();
-            }
+                MyStream.Dispose();
+            });
+            Console.ReadKey();
         }
     }
 }
+
+
+

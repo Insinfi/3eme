@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />  
+    <link href="~/StyleSheet/StyleSheet1.css" rel="stylesheet" />  
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (getCookie("Nom") == null) {
+                document.getElementsByClassName("CookieAbs")[0].style.visibility = 'visible';
+                document.getElementsByClassName("CookieAbs")[1].style.visibility = 'visible';
+            } else {
+                document.getElementsByName("tbCookie")[0].value = getCookie("Nom");   
+            }
+            
+        });
+
+
+        function defCookie() {
+            setCookie('Nom', document.getElementsByName("tbCookie")[0].value, 1);
+        }
+        function destrucCookies() {
+            alert("Del");
+            delCookie("Nom");
+        }
+
+        function getCookie(NameOfCookie) {
+            if (document.cookie.length > 0) {
+                begin = document.cookie.indexOf(NameOfCookie + "=");
+                if (begin != -1) {
+                    begin += NameOfCookie.length + 1;
+                    end = document.cookie.indexOf(";", begin);
+                    if (end == -1) end = document.cookie.length;
+                    return unescape(document.cookie.substring(begin, end));
+                }
+            }
+            return null;
+        }
+        function setCookie(NameOfCookie, value, expiredays) {
+            var ExpireDate = new Date();
+            ExpireDate.setTime(ExpireDate.getTime() + (expiredays * 24 * 3600 * 1000));
+            document.cookie = NameOfCookie + "=" + escape(value) +
+                ((expiredays == null) ? "" : "; expires=" + ExpireDate.toGMTString());
+        }
+        function delCookie(NameOfCookie) {
+            if (getCookie(NameOfCookie)) {
+                document.cookie = NameOfCookie + "=" +
+                    "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+            }
+        }
+    </script>
+    <title>Index</title>
+</head>
+<body>
+    <form method="get" action="~/Home/GetCookie">
+        <label>Contenu du cookie :</label><input type="text" name="tbCookie"/><span class="CookieAbs">(*)</span><br />
+        <input type="button" name="Sauver" value="Sauver" onclick="defCookie()"/> <input onclick="destrucCookies()" type="button" name="clear" value="Effacer" /><br />
+        <span class="CookieAbs">* Cookie absent du system</span><input type="submit" />
+    </form>
+    <div>
+        Coucou tu veux voir ma 
+    </div>
+</body>
+</html>
