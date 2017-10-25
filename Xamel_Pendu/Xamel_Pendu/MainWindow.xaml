@@ -9,21 +9,29 @@
     <DockPanel LastChildFill="False">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Jeu">
-                <MenuItem Header="Demarer"></MenuItem>
+                <MenuItem Header="Demarer" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="A propos"></MenuItem>
         </Menu>
 
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Name="PanelMot" Orientation="Horizontal"></StackPanel>
-            </StackPanel>
-            <Image Source="C:\Users\Insinfi\Source\Repos\3eme-Prog-Th\Xamel_Pendu\Xamel_Pendu\Image\imawesome.jpg"></Image>
-        </StackPanel>
-        
-        
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>Test</StatusBarItem>
         </StatusBar>
+        
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Border Name="TabMotsB" BorderThickness="1" Margin="10">
+                    <StackPanel Name="TabMots" Orientation="Horizontal">
+                    </StackPanel>
+                </Border>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBox Name="tbLettre" Width="25" Height="25" Margin="10"></TextBox>
+                    <Button  MinWidth="25" Height="25" Margin="10" Content="Valide" Click="Button_Click"></Button>
+                </StackPanel>
+            </StackPanel>
+            <Image Name="imageP" Height="170" Width="210"></Image>
+        </StackPanel>
+        
+        
     </DockPanel>
 </Window>
