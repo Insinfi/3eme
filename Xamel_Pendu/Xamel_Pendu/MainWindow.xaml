@@ -15,14 +15,19 @@
         </Menu>
 
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>Test</StatusBarItem>
+            <Label Name="timerLabel"></Label>
+            
         </StatusBar>
-        
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+
+        <StackPanel Name="PanelBt" Orientation="Horizontal"  Visibility="Hidden">
+            <StackPanel  Orientation="Vertical" VerticalAlignment="Center">
                 <Border Name="TabMotsB" BorderThickness="1" Margin="10">
+
+
                     <StackPanel Name="TabMots" Orientation="Horizontal">
                     </StackPanel>
+                
+                
                 </Border>
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <TextBox Name="tbLettre" Width="25" Height="25" Margin="10"></TextBox>
@@ -31,7 +36,12 @@
             </StackPanel>
             <Image Name="imageP" Height="170" Width="210"></Image>
         </StackPanel>
-        
+        <StackPanel Name="LosePanel" Visibility="Collapsed">
+            <Image Source="C:\Users\Insinfi\Source\Repos\3eme-Prog-Th\Xamel_Pendu\Xamel_Pendu\Image\YouLose.gif"></Image>
+        </StackPanel>
+        <StackPanel Name="WinPanel" Visibility="Collapsed">
+            <Image Source="C:\Users\Insinfi\Source\Repos\3eme-Prog-Th\Xamel_Pendu\Xamel_Pendu\Image\YouWin.png"></Image>
+        </StackPanel>
         
     </DockPanel>
 </Window>

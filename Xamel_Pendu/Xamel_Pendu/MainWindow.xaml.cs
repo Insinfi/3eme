@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,7 +24,9 @@ namespace Xamel_Pendu
         string MotChoisi = "";
         List<Border> bordure = new List<Border>();
         List<Label> lettres = new List<Label>();
-        int vie = 7;
+        int vie = 3;
+        public Timer RefreshTimer;
+        int timer;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +40,6 @@ namespace Xamel_Pendu
             TabMotsB.BorderBrush = Brushes.Black;
             lettres.Clear();
             bordure.Clear();
-            vie = 7;
             imageP.Source = new BitmapImage(new Uri("Image/imawesome.jpg",UriKind.Relative));
             for (int i = 0; i < mot.Length; i++)
             {
@@ -58,8 +60,28 @@ namespace Xamel_Pendu
         {
 
             CreateLetter("abathur");
+            vie =3;
+            timer = 150;
+            tbLettre.Clear();
+            PanelBt.Visibility = Visibility.Visible;
+            LosePanel.Visibility = Visibility.Collapsed;
+            RefreshTimer = new Timer(1000);
+            RefreshTimer.Elapsed += RefreshTimer_Elapsed;
+            RefreshTimer.Enabled = true;
+            RefreshTimer.Start();
+            this.timerLabel.Content= timer.ToString() + "s";
         }
-
+        private void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            timer--;
+            this.Dispatcher.BeginInvoke(new Action(() => {
+                this.timerLabel.Content= timer.ToString() + "s";
+                if (timer<1)
+                {
+                    Lose();
+                }
+            }));
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool found = false;
@@ -79,12 +101,54 @@ namespace Xamel_Pendu
                 vie--;
                 switch (vie)
                 {
-                    case 6:
+                    case 2:
                         imageP.Source = new BitmapImage(new Uri("Image/mommy.jpg", UriKind.Relative));
                         break;
+                    case 1:
+                        imageP.Source = new BitmapImage(new Uri("Image/Aballoween.png", UriKind.Relative));
+                        break;
+                    case 0:
+                            Lose();
+                        break;
+                }
+                }
+            if(found == true)
+                {
+                    bool fini = true;
+                    for(int i = 0; i < MotChoisi.Length; i++)
+                    {
+                        if (lettres[i].IsVisible)
+                        {
+
+                        }
+                        else
+                        {
+                            fini = false;
+                        }
+                    }
+                    if (fini == true)
+                    {
+                        Win();
+                    }
                 }
             }
-            }
+            tbLettre.Clear();
+        }
+        public void Lose()
+        {
+
+            PanelBt.Visibility = Visibility.Collapsed;
+            LosePanel.Visibility = Visibility.Visible;
+            RefreshTimer.Stop();
+            timerLabel.Content = "You lose";
+        }
+        public void Win()
+        {
+
+            PanelBt.Visibility = Visibility.Collapsed;
+            WinPanel.Visibility = Visibility.Visible;
+            RefreshTimer.Stop();
+            timerLabel.Content = "You Win";
         }
     }
 }
