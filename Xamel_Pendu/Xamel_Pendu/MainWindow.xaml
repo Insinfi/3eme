@@ -37,10 +37,10 @@
             <Image Name="imageP" Height="170" Width="210"></Image>
         </StackPanel>
         <StackPanel Name="LosePanel" Visibility="Collapsed">
-            <Image Source="C:\Users\Insinfi\Source\Repos\3eme-Prog-Th\Xamel_Pendu\Xamel_Pendu\Image\YouLose.gif"></Image>
+            <Image Source="Image/YouLose.gif"></Image>
         </StackPanel>
         <StackPanel Name="WinPanel" Visibility="Collapsed">
-            <Image Source="C:\Users\Insinfi\Source\Repos\3eme-Prog-Th\Xamel_Pendu\Xamel_Pendu\Image\YouWin.png"></Image>
+            <Image Source="Image/YouWin.png"></Image>
         </StackPanel>
         
     </DockPanel>

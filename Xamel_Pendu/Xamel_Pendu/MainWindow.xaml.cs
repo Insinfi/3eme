@@ -21,15 +21,17 @@ namespace Xamel_Pendu
     /// </summary>
     public partial class MainWindow : Window
     {
-        string MotChoisi = "";
+        string MotChoisi;
         List<Border> bordure = new List<Border>();
         List<Label> lettres = new List<Label>();
-        int vie = 3;
+        List<string> listMots = new List<string>();
+        int vie;
         public Timer RefreshTimer;
         int timer;
         public MainWindow()
         {
             InitializeComponent();
+            listMots.AddRange(new string[] { "abathur", "diva" , "wololo", "rodolphe"});
         }
 
         public void CreateLetter(string mot)
@@ -59,12 +61,13 @@ namespace Xamel_Pendu
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
-            CreateLetter("abathur");
+            CreateLetter(listMots[new Random().Next(0, listMots.Count)]);
             vie =3;
             timer = 150;
             tbLettre.Clear();
             PanelBt.Visibility = Visibility.Visible;
             LosePanel.Visibility = Visibility.Collapsed;
+            WinPanel.Visibility = Visibility.Collapsed;
             RefreshTimer = new Timer(1000);
             RefreshTimer.Elapsed += RefreshTimer_Elapsed;
             RefreshTimer.Enabled = true;
