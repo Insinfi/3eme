@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbCours20172018" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=127.0.0.1\SQLEXPRESS;Initial Catalog=dbCours20172018;Persist Security Info=True;User ID=Cours2018" SettingsObjectName="Trombinoscope.Properties.Settings" SettingsPropertyName="dbCours20172018ConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.GetAllUsers" Method="GetAllUsers">
+    <ElementType Name="GetAllUsersResult">
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Prenom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Photo" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetUserInfo" Method="GetUserInfo">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <ElementType Name="GetUserInfoResult">
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Nom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Prenom" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="mail" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Tel" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="GSM" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NomDeRue" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CodePostal" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Localite" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.UpdateUser" Method="UpdateUser">
+    <Parameter Name="UserID" Parameter="userID" Type="System.Guid" DbType="UniqueIdentifier" />
+    <Parameter Name="Nom" Parameter="nom" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Prenom" Parameter="prenom" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="mail" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Tel" Parameter="tel" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="GSM" Parameter="gSM" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
