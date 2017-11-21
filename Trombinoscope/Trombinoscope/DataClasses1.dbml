@@ -31,4 +31,15 @@
     <Parameter Name="GSM" Parameter="gSM" Type="System.String" DbType="NVarChar(50)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.AddNewUser" Method="AddNewUser">
+    <Parameter Name="Nom" Parameter="nom" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Prenom" Parameter="prenom" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="mail" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Tel" Parameter="tel" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="GSM" Parameter="gSM" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Photo" Parameter="photo" Type="System.Data.Linq.Binary" DbType="Image" />
+    <ElementType Name="AddNewUserResult">
+      <Column Name="" Member="Column1" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

@@ -82,6 +82,13 @@ namespace Trombinoscope
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), userID, nom, prenom, mail, tel, gSM);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.AddNewUser")]
+		public ISingleResult<AddNewUserResult> AddNewUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Nom", DbType="NVarChar(50)")] string nom, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Prenom", DbType="NVarChar(50)")] string prenom, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string mail, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tel", DbType="NVarChar(50)")] string tel, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GSM", DbType="NVarChar(50)")] string gSM, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Photo", DbType="Image")] System.Data.Linq.Binary photo)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), nom, prenom, mail, tel, gSM, photo);
+			return ((ISingleResult<AddNewUserResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class GetAllUsersResult
@@ -329,6 +336,32 @@ namespace Trombinoscope
 				if ((this._Localite != value))
 				{
 					this._Localite = value;
+				}
+			}
+		}
+	}
+	
+	public partial class AddNewUserResult
+	{
+		
+		private System.Nullable<System.Guid> _Column1;
+		
+		public AddNewUserResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="", Storage="_Column1", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> Column1
+		{
+			get
+			{
+				return this._Column1;
+			}
+			set
+			{
+				if ((this._Column1 != value))
+				{
+					this._Column1 = value;
 				}
 			}
 		}

@@ -6,18 +6,19 @@
         xmlns:local="clr-namespace:Trombinoscope"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self},Path=mwvm}"
-        Title="MainWindow" Height="500" Width="1000">
+        Title="MainWindow" Height="900" Width="1000">
     <Window.Resources>
         <local:PhotoConverter x:Key="PhotoConverter"></local:PhotoConverter>
     </Window.Resources>
     <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical">
         <ListBox SelectedIndex="0" ItemsSource="{Binding UsersList, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="0,10,0,10">
                         <StackPanel Orientation="Horizontal">
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,10,0">
-                                <Image Width="150" Height="150" Source="{Binding Photo, Converter={StaticResource PhotoConverter}}"></Image>
+                                <Image Width="50" Height="50" Source="{Binding Photo, Converter={StaticResource PhotoConverter}}"></Image>
                             </Border>
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
@@ -34,6 +35,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+            <Button Click="Ajouter_Click" Name="Ajouter" Content="Ajouter" Margin="0,0,0,10px"></Button>
+        </StackPanel>
         <StackPanel Margin="20" Orientation="Vertical">
             <StackPanel Margin="5" Orientation="Horizontal">
                 <Label  MinWidth="100">Nom:</Label>

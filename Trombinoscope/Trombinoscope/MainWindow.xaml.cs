@@ -41,5 +41,13 @@ namespace Trombinoscope
             mwvm.UpdateUser();
 
         }
+
+        private void Ajouter_Click(object sender, RoutedEventArgs e)
+        {
+            Ajouter AjtWin = new Ajouter(mwvm);
+            AjtWin.ShowDialog();
+            mwvm.UsersList = new List<GetAllUsersResult>(mwvm.UsersList);
+
+        }
     }
 }

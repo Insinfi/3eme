@@ -23,7 +23,13 @@ namespace Trombinoscope
 
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        public List<GetAllUsersResult> UsersList { get; set; }
+        private List<GetAllUsersResult> MyUsersList;
+        public List<GetAllUsersResult> UsersList {
+            get { return MyUsersList; }
+            set {
+                MyUsersList = value;
+                OnPropertyChanged("UsersList");
+            } }
         public GetUserInfoResult CurrentUser { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,7 +40,7 @@ namespace Trombinoscope
             UsersList = MyContext.GetAllUsers().ToList();
         }
 
-        protected void OnPropertyChanged(string propertyName = null)
+        public void OnPropertyChanged(string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
