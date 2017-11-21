@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Trombinoscope"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self},Path=mwvm}"
-        Title="MainWindow" Height="350" Width="600">
+        Title="MainWindow" Height="500" Width="1000">
     <Window.Resources>
         <local:PhotoConverter x:Key="PhotoConverter"></local:PhotoConverter>
     </Window.Resources>
@@ -53,7 +53,7 @@
             </StackPanel>
             <StackPanel Margin="5" Orientation="Horizontal">
                 <Label  MinWidth="100">Num Gsm:</Label>
-                <TextBox MinWidth="200" Text="{Binding Path=CurrentUser.GSM, Mode=TwoWay}"></TextBox>
+                <TextBox MinWidth="200" Text="{Binding Path=CurrentUser.GSM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </StackPanel>
             <StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Padding="5" Click="Button_Click">Mettre à jour</Button>

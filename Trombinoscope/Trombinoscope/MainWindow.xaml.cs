@@ -39,6 +39,7 @@ namespace Trombinoscope
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             mwvm.UpdateUser();
+
         }
     }
 }

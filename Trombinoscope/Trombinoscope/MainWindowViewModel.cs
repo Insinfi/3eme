@@ -8,6 +8,19 @@ using System.Threading.Tasks;
 
 namespace Trombinoscope
 {
+    public partial class GetAllUsersResult : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName=null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         public List<GetAllUsersResult> UsersList { get; set; }
@@ -48,6 +61,11 @@ namespace Trombinoscope
         {
             DataClasses1DataContext MyContext = new DataClasses1DataContext();
             MyContext.UpdateUser(CurrentUser.UserID, CurrentUser.Nom, CurrentUser.Prenom, CurrentUser.mail, CurrentUser.Tel,CurrentUser.GSM);
+            var selectuser = (from user in UsersList where user.UserID == CurrentUser.UserID select user).FirstOrDefault();
+            selectuser.Nom = CurrentUser.Nom;
+            selectuser.Prenom = CurrentUser.Prenom;
+            selectuser.OnPropertyChanged("Nom");
+            selectuser.OnPropertyChanged("Prenom");
         }
     }
 }
