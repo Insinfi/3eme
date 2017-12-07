@@ -8,9 +8,8 @@
         Title="MainWindow" Height="350" Width="525">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" >
-            <ListBox Name="Liste_Client">
-                <ListItem>
-                </ListItem>
+            <ListBox Name="Liste_Client" SelectedIndex="0" Width="300px">  
+                
             </ListBox>
         </StackPanel>
     </StackPanel>
