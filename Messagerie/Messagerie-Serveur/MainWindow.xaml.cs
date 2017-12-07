@@ -24,5 +24,15 @@ namespace Messagerie_Serveur
         {
             InitializeComponent();
         }
+
+        private void Start_Server_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Stop_Server_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

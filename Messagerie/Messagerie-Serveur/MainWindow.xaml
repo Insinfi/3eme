@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:Messagerie_Serveur"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal" >
-            <ListBox Name="Liste_Client" SelectedIndex="0" Width="300px">  
-                
-            </ListBox>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Button Name="Start_Server" Click="Start_Server_Click" Content="Start Server" Width="100px" Height="25px" Margin="0,10,0,0"></Button>
+            <Button Name="Stop_Server" Click="Stop_Server_Click" Content="Stop Server" Width="100px" Height="25px" Margin="0,10,0,0"></Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" >
+            <Label>Lal</Label>
         </StackPanel>
     </StackPanel>
 </Window>
