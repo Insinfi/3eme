@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:Messagerie_Serveur"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal" >
+            <ListBox Name="Liste_Client">
+                <ListItem>
+                </ListItem>
+            </ListBox>
+        </StackPanel>
+    </StackPanel>
 </Window>
