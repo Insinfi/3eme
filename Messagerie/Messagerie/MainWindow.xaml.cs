@@ -28,10 +28,10 @@ namespace Messagerie
         public MainWindow()
         {
             InitializeComponent();
+            TcpClient client = new TcpClient();
+            client.Connect(ServerIp, port);
             try
             {
-                TcpClient client = new TcpClient();
-                client.Connect(ServerIp, port);
                 Stream str = client.GetStream();
                 string coucou = "coucou";
                 byte[] ba = Encoding.ASCII.GetBytes(coucou);
@@ -40,7 +40,7 @@ namespace Messagerie
             }
             catch (Exception e)
             {
-
+                client.Close();
             }
         }
     }
