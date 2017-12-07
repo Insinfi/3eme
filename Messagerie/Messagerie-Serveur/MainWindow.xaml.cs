@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,11 +28,28 @@ namespace Messagerie_Serveur
 
         private void Start_Server_Click(object sender, RoutedEventArgs e)
         {
-
+            Start_Server.IsEnabled = false;
+            Stop_Server.IsEnabled = true;
+            Status_Server.Content = "ON";
+            
+            TcpListener Listener = new TcpListener(new System.Net.IPEndPoint(System.Net.IPAddress.Parse("10.13.1.16"),4242));
+            MessageBox.Show("Start server");
+            log.Text = "Start serveur";
+            Listener.Start();
+            TcpClient MyCLient = Listener.AcceptTcpClient(); //ADD TO THREAD
+            NetworkStream stream = MyCLient.GetStream();
+            string Message = "Ok\r\n";
+            byte[] sendbyte = Encoding.ASCII.GetBytes(Message);
+            stream.Write(sendbyte, 0, sendbyte.Length);
+            MyCLient.Close();
+            Listener.Stop();
         }
 
         private void Stop_Server_Click(object sender, RoutedEventArgs e)
         {
+            Start_Server.IsEnabled = true;
+            Stop_Server.IsEnabled = false;
+            Status_Server.Content = "OFF";
 
         }
     }

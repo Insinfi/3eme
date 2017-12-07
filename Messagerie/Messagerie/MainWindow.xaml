@@ -6,11 +6,18 @@
         xmlns:local="clr-namespace:Messagerie"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="92*"/>
-            <ColumnDefinition Width="425*"/>
-        </Grid.ColumnDefinitions>
-        <Label Grid.ColumnSpan="2">coucou</Label>
-    </Grid>
+    <DockPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Width="200">
+            <Label>Clients connectés</Label>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
+            <RichTextBox>
+
+            </RichTextBox>
+            <Button>Envoyer</Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <Label>Historique de la conversation</Label>
+        </StackPanel>
+    </DockPanel>
 </Window>
