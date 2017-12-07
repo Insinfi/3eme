@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -21,15 +22,26 @@ namespace Messagerie
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string hostName = "";
-        const int port = 55;
+        const string ServerIp = "10.13.1.16";
+        const int port = 4242;
 
         public MainWindow()
         {
             InitializeComponent();
-            TcpClient client = new TcpClient(hostName, port);
-
-            client.Close();
+            TcpClient client = new TcpClient();
+            client.Connect(ServerIp, port);
+            try
+            {
+                Stream str = client.GetStream();
+                string coucou = "coucou";
+                byte[] ba = Encoding.ASCII.GetBytes(coucou);
+                str.Write(ba, 0, ba.Length);
+                client.Close();
+            }
+            catch (Exception e)
+            {
+                client.Close();
+            }
         }
     }
 }
