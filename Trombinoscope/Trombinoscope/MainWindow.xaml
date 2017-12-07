@@ -6,20 +6,31 @@
         xmlns:local="clr-namespace:Trombinoscope"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self},Path=mwvm}"
-        Title="MainWindow" Height="900" Width="1000">
+        Title="MainWindow" Height="500" Width="1000">
     <Window.Resources>
         <local:PhotoConverter x:Key="PhotoConverter"></local:PhotoConverter>
     </Window.Resources>
     <StackPanel Orientation="Horizontal">
         <StackPanel Orientation="Vertical">
-        <ListBox SelectedIndex="0" ItemsSource="{Binding UsersList, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged">
+        <ListBox SelectedIndex="0" ItemsSource="{Binding UsersList, Mode=TwoWay}" SelectionChanged="ListBox_SelectionChanged" Height="300px" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="0,10,0,10">
-                        <StackPanel Orientation="Horizontal">
-                            <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,10,0">
+
+
+                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="0,10,0,10">
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete" Click="MenuItem_Click" >
+                                        <MenuItem.Icon>
+                                            <Image Source="Images/Croix.png"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Border.ContextMenu>
+                            <StackPanel Orientation="Horizontal">
+                                <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,10,0">
                                 <Image Width="50" Height="50" Source="{Binding Photo, Converter={StaticResource PhotoConverter}}"></Image>
-                            </Border>
+                                </Border>
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <Label MinWidth="60" Margin="3" VerticalAlignment="Center">Nom:</Label>

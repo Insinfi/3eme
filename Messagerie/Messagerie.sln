@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messagerie", "Messagerie\Messagerie.csproj", "{2703028C-6A03-4A66-A1C3-A377AF5021FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messagerie-Serveur", "Messagerie-Serveur\Messagerie-Serveur.csproj", "{26B8C076-5F6F-49F7-9C99-C85DA3AC2861}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2703028C-6A03-4A66-A1C3-A377AF5021FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2703028C-6A03-4A66-A1C3-A377AF5021FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2703028C-6A03-4A66-A1C3-A377AF5021FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2703028C-6A03-4A66-A1C3-A377AF5021FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26B8C076-5F6F-49F7-9C99-C85DA3AC2861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26B8C076-5F6F-49F7-9C99-C85DA3AC2861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26B8C076-5F6F-49F7-9C99-C85DA3AC2861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26B8C076-5F6F-49F7-9C99-C85DA3AC2861}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90FA0087-E957-4CD4-846F-B7E405BEC5C1}
+	EndGlobalSection
+EndGlobal

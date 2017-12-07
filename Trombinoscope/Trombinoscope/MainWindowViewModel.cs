@@ -73,5 +73,12 @@ namespace Trombinoscope
             selectuser.OnPropertyChanged("Nom");
             selectuser.OnPropertyChanged("Prenom");
         }
+
+        public void DeleteUser(Guid id)
+        {
+            DataClasses1DataContext mycontext = new DataClasses1DataContext();
+            mycontext.DeleteUser(id);
+            
+        }
     }
 }

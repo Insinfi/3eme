@@ -33,11 +33,15 @@ namespace Trombinoscope
         {
             ListBox tmp = (ListBox)sender;
             GetAllUsersResult user = (GetAllUsersResult)tmp.SelectedItem;
-            mwvm.UpdateCurrentUser(user.UserID);
+            if(user != null)
+            {
+                mwvm.UpdateCurrentUser(user.UserID);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             mwvm.UpdateUser();
 
         }
@@ -48,6 +52,15 @@ namespace Trombinoscope
             AjtWin.ShowDialog();
             mwvm.UsersList = new List<GetAllUsersResult>(mwvm.UsersList);
 
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem tmp = (MenuItem)sender;
+            GetAllUsersResult user= (GetAllUsersResult)tmp.DataContext;
+            mwvm.DeleteUser(user.UserID);
+            mwvm.UpdateListUsers();
+            
         }
     }
 }
