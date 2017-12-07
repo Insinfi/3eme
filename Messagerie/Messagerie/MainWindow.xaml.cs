@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,15 @@ namespace Messagerie
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string hostName = "";
+        const int port = 55;
+
         public MainWindow()
         {
             InitializeComponent();
+            TcpClient client = new TcpClient(hostName, port);
+
+            client.Close();
         }
     }
 }
