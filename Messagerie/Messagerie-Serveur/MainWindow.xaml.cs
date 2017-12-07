@@ -60,7 +60,12 @@ namespace Messagerie_Serveur
                 try
                 {
                     TcpClient MyCLient = Listener.AcceptTcpClient();
-                    NetworkStream stream = MyCLient.GetStream();
+                    Thread t = new Thread(()=>Stay_Connected(MyCLient));
+                    t.Start();
+                    this.Dispatcher.BeginInvoke(new Action(() => {
+                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n";
+                    }));
+                    /*NetworkStream stream = MyCLient.GetStream();
                     this.Dispatcher.BeginInvoke(new Action(() => {
                         log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n";
                     }));
@@ -69,12 +74,31 @@ namespace Messagerie_Serveur
                     byte[] receivebyte = new byte[1024];
                     int readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
                     this.Dispatcher.BeginInvoke(new Action(() => {
-                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte);
+                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte)+"\n";
                     }));
-                    MyCLient.Close();
+                    MyCLient.Close();*/
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
+
+                }
+            }
+        }
+
+        private void Stay_Connected(TcpClient MyCLient)
+        {
+            NetworkStream stream = MyCLient.GetStream();
+            while (true)
+            {
+                if (stream.DataAvailable)
+                {
+            byte[] sendbyte = Encoding.ASCII.GetBytes(DateTimeOffset.Now.ToString("HH:mm:ss"));
+            stream.Write(sendbyte, 0, sendbyte.Length);
+            byte[] receivebyte = new byte[1024];
+            int readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
+            this.Dispatcher.BeginInvoke(new Action(() => {
+                log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte)+"\n";
+            }));
 
                 }
             }
