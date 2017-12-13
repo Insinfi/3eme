@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Messagerie
 {
@@ -43,6 +44,22 @@ namespace Messagerie
             catch
             {
                 throw new Exception("ça marche po");
+            }
+        }
+
+        public void receive()
+        {
+            byte[] receivedBuffer = new byte[255];
+            string receivedMessage = string.Empty;
+            int bytecount;
+            while (true)
+            {
+                bytecount = str.Read(receivedBuffer, 0, 255);
+                receivedMessage += Encoding.ASCII.GetString(receivedBuffer, 0, bytecount);
+                if (receivedMessage.EndsWith("\r\n"))
+                {
+                    MessageBox.Show(receivedMessage);
+                }
             }
         }
     }
