@@ -25,11 +25,24 @@ namespace Messagerie_Serveur
         const string IP = "10.13.1.16";
         TcpListener Listener = new TcpListener(new System.Net.IPEndPoint(System.Net.IPAddress.Parse(IP), 4242));
         bool run = false;
-        List<Thread> ClientsThreadList = new List<Thread>();
+        List<Client> ClientsThreadList = new List<Client>();
         Thread serverThread;
         public MainWindow()
         {
             InitializeComponent();
+            this.Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            Listener.Stop();
+            serverThread.Abort();
+            while (ClientsThreadList.Count > 0)
+            {
+                ClientsThreadList.Last().threadClient.Abort();
+                ClientsThreadList.Last().tCPclient.Close();
+                ClientsThreadList.RemoveAt(ClientsThreadList.Count - 1);
+            }
         }
 
         private void Start_Server_Click(object sender, RoutedEventArgs e)
@@ -64,25 +77,13 @@ namespace Messagerie_Serveur
                     
                     TcpClient MyCLient = Listener.AcceptTcpClient();
                     Thread mThread = new Thread(() => Stay_Connected(MyCLient));
-                    ClientsThreadList.Add(mThread);
+                    ClientsThreadList.Add(new Client() { threadClient = mThread, tCPclient=MyCLient });
                     mThread.Start();
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n");
                         CountClient.Content = ClientsThreadList.Count;
                     }));
-                    /*NetworkStream stream = MyCLient.GetStream();
-                    this.Dispatcher.Invoke(new Action(() => {
-                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n";
-                    }));
-                    byte[] sendbyte = Encoding.ASCII.GetBytes(DateTimeOffset.Now.ToString("HH:mm:ss"));
-                    stream.Write(sendbyte, 0, sendbyte.Length);
-                    byte[] receivebyte = new byte[1024];
-                    int readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
-                    this.Dispatcher.Invoke(new Action(() => {
-                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte)+"\n";
-                    }));
-                    MyCLient.Close();*/
                 }
                 catch (Exception e)
                 {
@@ -96,10 +97,13 @@ namespace Messagerie_Serveur
             NetworkStream stream = MyCLient.GetStream();
             byte[] receivebyte = new byte[1024];
             String Rmessage = string.Empty;
+            int readedByte=0;
             while (true)
             {
-
-                int readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
+                try
+                {
+                    readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
+                }                catch (Exception e) { readedByte = 0; }
                 if (readedByte != 0)
                 {
                     Rmessage += Encoding.ASCII.GetString(receivebyte, 0, readedByte);
@@ -126,7 +130,14 @@ namespace Messagerie_Serveur
                                 }));
                             }
                             byte[] sendbyte = Encoding.ASCII.GetBytes(alogin);
-                            stream.Write(sendbyte, 0, sendbyte.Length);
+                            try
+                            {
+                                stream.Write(sendbyte, 0, sendbyte.Length);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
                         }
                         else if (Rmessage.StartsWith("SEND FROM:"))
                         {
@@ -138,12 +149,17 @@ namespace Messagerie_Serveur
                         }
                         else
                         {
-                            byte[] sendbyte = Encoding.ASCII.GetBytes("ERROR: 404\r\n");
+                            byte[] sendbyte = Encoding.ASCII.GetBytes("ERROR:404\r\n");
                             stream.Write(sendbyte, 0, sendbyte.Length);
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "ERROR:404\n");
+                            }));
                         }
 
 
                         Rmessage = string.Empty;
+                        stream.Flush();
 
                     }
                     //byte[] sendbyte = Encoding.ASCII.GetBytes(Rmessage);
@@ -154,7 +170,7 @@ namespace Messagerie_Serveur
                 {
                     MyCLient.Close();
                     Thread MyThread = Thread.CurrentThread;
-                    var result = this.ClientsThreadList.Find(Th => Th == MyThread);
+                    var result = this.ClientsThreadList.Find(Cl => Cl.threadClient == MyThread);
                     if (result != null)
                     {
                         this.ClientsThreadList.Remove(result);
@@ -181,10 +197,5 @@ namespace Messagerie_Serveur
             log.ScrollIntoView(log.Items[log.Items.Count - 1]);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            run = false;
-            serverThread.Abort();
-        }
     }
 }
