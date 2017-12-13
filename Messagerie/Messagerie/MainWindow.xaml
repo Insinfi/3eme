@@ -14,7 +14,7 @@
             <RichTextBox>
 
             </RichTextBox>
-            <Button>Envoyer</Button>
+            <Button Click="Button_Click">Envoyer</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Name="test">
             <Label>Historique de la conversation</Label>

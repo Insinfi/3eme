@@ -59,8 +59,20 @@ namespace Messagerie
 
         public void Receive()
         {
-            string receive = connection.receive();
-            MessageBox.Show(receive);
+            string receive = string.Empty;
+            while (true)
+            {
+                receive += connection.receive();
+                if (receive.EndsWith("\r\n")) {
+                    MessageBox.Show(receive);
+                    receive = string.Empty;
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            connection.send("coucou");
         }
     }
 }

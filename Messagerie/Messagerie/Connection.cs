@@ -38,7 +38,7 @@ namespace Messagerie
         {
             try
             {
-                byte[] ba = Encoding.ASCII.GetBytes(message);
+                byte[] ba = Encoding.ASCII.GetBytes(message+"\r\n");
                 str.Write(ba, 0, ba.Length);
             }
             catch
@@ -47,25 +47,17 @@ namespace Messagerie
             }
         }
 
-        public void sendLOGIN(string id, string pwd)
-        {
-            send("LOGIN:" + id + ":" + pwd + "\r\n");
-        }
+        public void sendLOGIN(string id, string pwd) => send("LOGIN:" + id + ":" + pwd);
+
+        public void sendData(string id, string dest, string data) => send("SEND:" + dest + ":DATA" + data);
 
         public string receive()
         {
             byte[] receivedBuffer = new byte[255];
             string receivedMessage = string.Empty;
-            int bytecount;
-            while (true)
-            {
-                bytecount = str.Read(receivedBuffer, 0, 255);
-                receivedMessage += Encoding.ASCII.GetString(receivedBuffer, 0, bytecount);
-                if (receivedMessage.EndsWith("\r\n"))
-                {
-                    return receivedMessage;
-                }
-            }
+            int bytecount = str.Read(receivedBuffer, 0, 255);
+            receivedMessage = Encoding.ASCII.GetString(receivedBuffer, 0, bytecount);
+            return receivedMessage;
         }
     }
 }
