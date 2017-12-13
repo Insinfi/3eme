@@ -12,6 +12,8 @@
             <Label Name="Status_SQL" VerticalAlignment="Top" HorizontalAlignment="Center">OFF</Label>
             <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold">Serveur</Label>
             <Label Name="Status_Server" VerticalAlignment="Top" HorizontalAlignment="Center">OFF</Label>
+            <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold">#Client</Label>
+            <Label Name="CountClient" VerticalAlignment="Top" HorizontalAlignment="Center">0</Label>
             <Button Name="Start_Server" Click="Start_Server_Click" Content="Start Server" Width="100px" Height="25px" Margin="0,10,0,0"></Button>
             <Button Name="Stop_Server" Click="Stop_Server_Click" Content="Stop Server" Width="100px" Height="25px" Margin="0,10,0,0" IsEnabled="False"></Button>
         </StackPanel>
