@@ -72,7 +72,7 @@ namespace Messagerie
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            connection.send("coucou");
+            connection.sendData("DUDU", "coucou, tu veux voir mon XAML");
         }
     }
 }

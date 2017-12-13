@@ -49,7 +49,7 @@ namespace Messagerie
 
         public void sendLOGIN(string id, string pwd) => send("LOGIN:" + id + ":" + pwd);
 
-        public void sendData(string id, string dest, string data) => send("SEND:" + dest + ":DATA" + data);
+        public void sendData(string dest, string data) => send("SEND:" + dest + ":" + data);
 
         public string receive()
         {
