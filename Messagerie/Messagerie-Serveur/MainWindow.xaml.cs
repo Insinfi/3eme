@@ -61,6 +61,7 @@ namespace Messagerie_Serveur
             {
                 try
                 {
+                    
                     TcpClient MyCLient = Listener.AcceptTcpClient();
                     Thread mThread = new Thread(() => Stay_Connected(MyCLient));
                     ClientsThreadList.Add(mThread);
@@ -68,6 +69,7 @@ namespace Messagerie_Serveur
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n");
+                        CountClient.Content = ClientsThreadList.Count;
                     }));
                     /*NetworkStream stream = MyCLient.GetStream();
                     this.Dispatcher.Invoke(new Action(() => {
@@ -105,23 +107,42 @@ namespace Messagerie_Serveur
                     {
                         if (Rmessage.StartsWith("LOGIN:"))
                         {
-
+                            String alogin="ALOGIN:";
+                            bool Auth = true;
+                            if (Auth)
+                            {
+                                alogin += "200\r\n";
+                                this.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One login\n");
+                                }));
+                            }
+                            else
+                            {
+                                alogin += "404\r\n";
+                                this.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One Try\n");
+                                }));
+                            }
+                            byte[] sendbyte = Encoding.ASCII.GetBytes(alogin);
+                            stream.Write(sendbyte, 0, sendbyte.Length);
                         }
                         else if (Rmessage.StartsWith("SEND FROM:"))
                         {
 
                         }
+                        else if (Rmessage.StartsWith("ASKLIST"))
+                        {
+
+                        }
                         else
                         {
-                            byte[] sendbyte = Encoding.ASCII.GetBytes("ERROR: 404");
+                            byte[] sendbyte = Encoding.ASCII.GetBytes("ERROR: 404\r\n");
                             stream.Write(sendbyte, 0, sendbyte.Length);
                         }
 
 
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Rmessage + "\n");
-                        }));
                         Rmessage = string.Empty;
 
                     }
@@ -141,6 +162,7 @@ namespace Messagerie_Serveur
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Connection lose\n");
+                        CountClient.Content = ClientsThreadList.Count;
                     }));
                     break;
                 }
@@ -161,6 +183,7 @@ namespace Messagerie_Serveur
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            run = false;
             serverThread.Abort();
         }
     }
