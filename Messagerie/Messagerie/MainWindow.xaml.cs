@@ -22,25 +22,23 @@ namespace Messagerie
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string ServerIp = "10.13.1.16";
-        const int port = 4242;
-
+        public Connection connection { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            TcpClient client = new TcpClient();
-            client.Connect(ServerIp, port);
+            connection = new Connection();
+            connection.Connect();
             try
             {
-                Stream str = client.GetStream();
-                string coucou = "coucou";
-                byte[] ba = Encoding.ASCII.GetBytes(coucou);
-                str.Write(ba, 0, ba.Length);
-                client.Close();
+                connection.send("coucou");
             }
             catch (Exception e)
             {
-                client.Close();
+                connection.CloseConnection();
+            }
+            finally
+            {
+                connection.CloseConnection();
             }
         }
     }
