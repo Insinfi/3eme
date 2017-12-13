@@ -65,6 +65,7 @@ namespace Messagerie
                 receive += connection.receive();
                 if (receive.EndsWith("\r\n")) {
                     MessageBox.Show(receive);
+                    analyseReponse(receive);
                     receive = string.Empty;
                 }
             }
@@ -73,6 +74,26 @@ namespace Messagerie
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             connection.sendData("DUDU", "coucou, tu veux voir mon XAML");
+        }
+
+        public void analyseReponse(string reponse)
+        {
+            switch (reponse)
+            {
+                case "404\r\n":
+                    MessageBox.Show("la connection a échouée");
+                    this.Close();
+                    break;
+
+                case "200\r\n":
+                    MessageBox.Show("la connection a réussie");
+                    break;
+
+                default:
+                    MessageBox.Show("Serveur incohérent");
+                    this.Close();
+                    break;
+            }
         }
     }
 }
