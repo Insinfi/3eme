@@ -36,7 +36,7 @@ namespace Messagerie_Serveur
             Stop_Server.IsEnabled = true;
             Status_Server.Content = "ON";
             run = true;
-            log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " Server start\n";
+            AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Server start\n");
             Listener.Start();
             Thread thread = new Thread(Accept_client);
             thread.Start();
@@ -47,7 +47,7 @@ namespace Messagerie_Serveur
             Start_Server.IsEnabled = true;
             Stop_Server.IsEnabled = false;
             Status_Server.Content = "OFF";
-            log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " Server stop\n";
+            AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Server stop\n");
             run = false;
 
             Listener.Stop();
@@ -63,7 +63,7 @@ namespace Messagerie_Serveur
                     Thread t = new Thread(()=>Stay_Connected(MyCLient));
                     t.Start();
                     this.Dispatcher.BeginInvoke(new Action(() => {
-                        log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n";
+                        AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " New connection\n");
                     }));
                     /*NetworkStream stream = MyCLient.GetStream();
                     this.Dispatcher.BeginInvoke(new Action(() => {
@@ -97,11 +97,19 @@ namespace Messagerie_Serveur
             byte[] receivebyte = new byte[1024];
             int readedByte = stream.Read(receivebyte, 0, receivebyte.Length);
             this.Dispatcher.BeginInvoke(new Action(() => {
-                log.Text = log.Text + DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte)+"\n";
+                AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Encoding.ASCII.GetString(receivebyte, 0, readedByte)+"\n");
             }));
 
                 }
             }
         }
+
+        void AddLog(String logs)
+        {
+            log.Items.Add(new ListViewItem() { Content = logs});
+            log.ScrollIntoView(log.Items[log.Items.Count - 1]);
+        }
+
+
     }
 }
