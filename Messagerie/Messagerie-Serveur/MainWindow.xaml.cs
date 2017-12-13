@@ -66,6 +66,14 @@ namespace Messagerie_Serveur
             run = false;
 
             Listener.Stop();
+            serverThread.Abort();
+            while (ClientsThreadList.Count > 0)
+            {
+                ClientsThreadList.Last().threadClient.Abort();
+                ClientsThreadList.Last().tCPclient.Close();
+                ClientsThreadList.RemoveAt(ClientsThreadList.Count - 1);
+            }
+            CountClient.Content = ClientsThreadList.Count;
         }
 
         private void Accept_client()
@@ -116,10 +124,15 @@ namespace Messagerie_Serveur
                             if (Auth)
                             {
                                 alogin += "200\r\n";
+                                Rmessage=Rmessage.Replace("LOGIN:","");
+
+                                ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).UserId = Rmessage.Split(':')[0];
+                                ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).Authenticate = true;
                                 this.Dispatcher.Invoke(new Action(() =>
                                 {
                                     AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One login\n");
                                 }));
+                         
                             }
                             else
                             {
@@ -139,8 +152,45 @@ namespace Messagerie_Serveur
 
                             }
                         }
-                        else if (Rmessage.StartsWith("SEND FROM:"))
+                        else if (Rmessage.StartsWith("SEND:"))
                         {
+
+                            Rmessage= Rmessage.Replace("SEND:", "");
+                            String ASEND = "";
+                            //FIND USer
+                            String destID = Rmessage.Split(':')[0];
+                            Rmessage = Rmessage.Replace(destID + ":", "");
+                            bool destAuth = false;
+                            try
+                            {
+                                destAuth = ClientsThreadList.FindLast(fl => fl.UserId == destID).Authenticate;
+                            }
+                            catch (Exception e)
+                            {
+                                ASEND += "404";
+
+                                this.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " "+destID);
+                                }));
+                            }
+                           if (destAuth == true)
+                            {
+                                byte[] DATA = Encoding.ASCII.GetBytes(Rmessage);
+                                NetworkStream networkStream= ClientsThreadList.FindLast(fl => fl.UserId == destID).tCPclient.GetStream();
+                                networkStream.Write(DATA, 0, DATA.Length);
+                                ASEND += "200";
+                            }
+                            ASEND += "\r\n";
+                            byte[] sendbyte = Encoding.ASCII.GetBytes(ASEND);
+                            try
+                            {
+                                stream.Write(sendbyte, 0, sendbyte.Length);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
 
                         }
                         else if (Rmessage.StartsWith("ASKLIST"))
