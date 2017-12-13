@@ -195,7 +195,13 @@ namespace Messagerie_Serveur
                         }
                         else if (Rmessage.StartsWith("ASKLIST"))
                         {
-
+                            String ListUser = "";
+                            for(int i = 0; i < ClientsThreadList.Count; i++)
+                            {
+                                ListUser += ClientsThreadList[i].UserId;
+                            }
+                            byte[] sendbyte = Encoding.ASCII.GetBytes(ListUser);
+                            stream.Write(sendbyte, 0, sendbyte.Length);
                         }
                         else
                         {
