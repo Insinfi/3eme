@@ -26,9 +26,11 @@ namespace Messagerie
         public Connection connection { get; set; }
         public string id { get; set; }
         public string pwd { get; set; }
+        private Thread ReceiveThread;
         public MainWindow()
         {
             InitializeComponent();
+            this.Closed += MainWindow_Closed;
             login M_login = new login();
             if (M_login.ShowDialog() == true)
             {
@@ -39,7 +41,9 @@ namespace Messagerie
             connection.Connect();
             try
             {
-                connection.send("LOGIN:"+id+":"+pwd+"\r\n");
+                connection.sendLOGIN(id, pwd);
+                ReceiveThread = new Thread(Receive);
+                ReceiveThread.Start();
             }
             catch (Exception e)
             {
@@ -47,9 +51,16 @@ namespace Messagerie
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closed(object sender, EventArgs e)
         {
+            ReceiveThread.Abort();
             connection.CloseConnection();
+        }
+
+        public void Receive()
+        {
+            string receive = connection.receive();
+            MessageBox.Show(receive);
         }
     }
 }

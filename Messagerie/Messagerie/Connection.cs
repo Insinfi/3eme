@@ -47,7 +47,12 @@ namespace Messagerie
             }
         }
 
-        public void receive()
+        public void sendLOGIN(string id, string pwd)
+        {
+            send("LOGIN:" + id + ":" + pwd + "\r\n");
+        }
+
+        public string receive()
         {
             byte[] receivedBuffer = new byte[255];
             string receivedMessage = string.Empty;
@@ -58,7 +63,7 @@ namespace Messagerie
                 receivedMessage += Encoding.ASCII.GetString(receivedBuffer, 0, bytecount);
                 if (receivedMessage.EndsWith("\r\n"))
                 {
-                    MessageBox.Show(receivedMessage);
+                    return receivedMessage;
                 }
             }
         }
