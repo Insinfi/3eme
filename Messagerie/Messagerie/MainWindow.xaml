@@ -9,18 +9,19 @@
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Width="200">
             <Label>Clients connectés</Label>
+            <ListBox Name="Users" ></ListBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
-            <RichTextBox>
+            <TextBox Name="MSG">
 
-            </RichTextBox>
+            </TextBox>
             <Button Click="Button_Click">Envoyer</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Name="test">
             <Label>Historique de la conversation</Label>
-            <RichTextBox>
+            <TextBox Name="MSGReceive">
                 
-            </RichTextBox>
+            </TextBox>
         </StackPanel>
     </DockPanel>
 </Window>
