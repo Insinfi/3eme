@@ -35,13 +35,20 @@ namespace Messagerie_Serveur
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
-            Listener.Stop();
-            serverThread.Abort();
-            while (ClientsThreadList.Count > 0)
+            try
             {
-                ClientsThreadList.Last().threadClient.Abort();
-                ClientsThreadList.Last().tCPclient.Close();
-                ClientsThreadList.RemoveAt(ClientsThreadList.Count - 1);
+                Listener.Stop();
+                serverThread.Abort();
+                while (ClientsThreadList.Count > 0)
+                {
+                    ClientsThreadList.Last().threadClient.Abort();
+                    ClientsThreadList.Last().tCPclient.Close();
+                    ClientsThreadList.RemoveAt(ClientsThreadList.Count - 1);
+                }
+            }
+            catch (Exception s)
+            {
+
             }
         }
 
@@ -125,12 +132,13 @@ namespace Messagerie_Serveur
                             {
                                 alogin += "200\r\n";
                                 Rmessage=Rmessage.Replace("LOGIN:","");
+                                Rmessage = Rmessage.Replace("\r\n","");
 
                                 ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).UserId = Rmessage.Split(':')[0];
                                 ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).Authenticate = true;
                                 this.Dispatcher.Invoke(new Action(() =>
                                 {
-                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One login\n");
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One login : "+ ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).UserId + "\n");
                                 }));
                          
                             }
@@ -156,7 +164,7 @@ namespace Messagerie_Serveur
                         {
 
                             Rmessage= Rmessage.Replace("SEND:", "");
-                            String ASEND = "";
+                            String ASEND = "ASEND:";
                             //FIND USer
                             String destID = Rmessage.Split(':')[0];
                             Rmessage = Rmessage.Replace(destID + ":", "");
@@ -164,19 +172,20 @@ namespace Messagerie_Serveur
                             try
                             {
                                 destAuth = ClientsThreadList.FindLast(fl => fl.UserId == destID).Authenticate;
+                                this.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Send to :" + destID+" :From:"+ ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).UserId);
+                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " " + Rmessage);
+                                }));
                             }
                             catch (Exception e)
                             {
                                 ASEND += "404";
 
-                                this.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " "+destID);
-                                }));
                             }
                            if (destAuth == true)
                             {
-                                byte[] DATA = Encoding.ASCII.GetBytes(Rmessage);
+                                byte[] DATA = Encoding.ASCII.GetBytes("RECIEVE:" + ClientsThreadList.FindLast(fl => fl.tCPclient==MyCLient).UserId+":" + Rmessage);
                                 NetworkStream networkStream= ClientsThreadList.FindLast(fl => fl.UserId == destID).tCPclient.GetStream();
                                 networkStream.Write(DATA, 0, DATA.Length);
                                 ASEND += "200";
@@ -195,11 +204,12 @@ namespace Messagerie_Serveur
                         }
                         else if (Rmessage.StartsWith("ASKLIST"))
                         {
-                            String ListUser = "";
+                            String ListUser = "LIST:";
                             for(int i = 0; i < ClientsThreadList.Count; i++)
                             {
                                 ListUser += ClientsThreadList[i].UserId+":";
                             }
+                            ListUser += "\r\n";
                             byte[] sendbyte = Encoding.ASCII.GetBytes(ListUser);
                             stream.Write(sendbyte, 0, sendbyte.Length);
                         }
@@ -224,18 +234,27 @@ namespace Messagerie_Serveur
                 }
                 else
                 {
-                    MyCLient.Close();
                     Thread MyThread = Thread.CurrentThread;
                     var result = this.ClientsThreadList.Find(Cl => Cl.threadClient == MyThread);
                     if (result != null)
                     {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Connection lose : " + ClientsThreadList.FindLast(fl => fl.threadClient == MyThread).UserId + "\n");
+                            CountClient.Content = ClientsThreadList.Count-1;
+                        }));
                         this.ClientsThreadList.Remove(result);
                     }
-                    this.Dispatcher.Invoke(new Action(() =>
+                    else
                     {
-                        AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " Connection lose\n");
-                        CountClient.Content = ClientsThreadList.Count;
-                    }));
+
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + " No client found\n");
+                            CountClient.Content = ClientsThreadList.Count;
+                        }));
+                    }
+                    MyCLient.Close();
                     break;
                 }
 

@@ -12,7 +12,7 @@ namespace Messagerie_Serveur
     {
         public Thread threadClient { get; set; }
         public TcpClient tCPclient { get; set; }
-        public String UserId { get; set; }
+        public String UserId { get; set; } = "Default";
         public bool Authenticate { get; set; }
     }
 }
