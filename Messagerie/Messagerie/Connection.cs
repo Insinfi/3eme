@@ -51,6 +51,8 @@ namespace Messagerie
 
         public void sendData(string dest, string data) => send("SEND:" + dest + ":" + data);
 
+        public void sendASKLIST() => send("ASKLIST");
+
         public string receive()
         {
             byte[] receivedBuffer = new byte[255];
