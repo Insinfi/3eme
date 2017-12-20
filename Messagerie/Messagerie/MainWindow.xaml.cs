@@ -177,10 +177,6 @@ namespace Messagerie
                     {
                         updateMessages();
                     }));
-                    /*this.Dispatcher.Invoke(new Action(() =>
-                    {
-                        MSGReceive.Text = reponse.Split(':')[2];
-                    }));*/
                     break;
 
                 default:
@@ -229,6 +225,7 @@ namespace Messagerie
                             Label labelMSG = new Label();
                             labelMSG.Content = msg;
                             MSGReceive.Items.Add(labelMSG);
+                            MSGReceive.ScrollIntoView(MSGReceive.Items[MSGReceive.Items.Count - 1]);
                         }
                     }
                 }
@@ -250,6 +247,7 @@ namespace Messagerie
                             Label labelMSG = new Label();
                             labelMSG.Content = msg;
                             MSGReceive.Items.Add(labelMSG);
+                            MSGReceive.ScrollIntoView(MSGReceive.Items[MSGReceive.Items.Count - 1]);
                         }
                     }
                 }
