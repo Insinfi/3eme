@@ -204,6 +204,10 @@ namespace Messagerie
 
         private void Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(Users.SelectedIndex == -1)
+            {
+                BTEnvoyer.IsEnabled = false;
+            }
             Label label = (Label)Users.SelectedItem;
             if (label != null)
             {
@@ -243,6 +247,14 @@ namespace Messagerie
                         MSGReceive.Items.Clear();
                         foreach (string msg in usr.messages)
                         {
+                            if (usr.isConnected)
+                            {
+                                BTEnvoyer.IsEnabled = true;
+                            }
+                            else
+                            {
+                                BTEnvoyer.IsEnabled = false;
+                            }
                             Label labelMSG = new Label();
                             labelMSG.Content = msg;
                             MSGReceive.Items.Add(labelMSG);
