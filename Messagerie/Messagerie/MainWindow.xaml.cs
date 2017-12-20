@@ -124,7 +124,6 @@ namespace Messagerie
                     break;
 
                 case "LIST":
-                    MessageBox.Show(reponse.Split(':').Length.ToString());
                     bool isGone;
                     bool isNew;
                     for(int a = 0; a < connectedUsers.Count; a++)
