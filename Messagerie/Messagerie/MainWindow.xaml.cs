@@ -26,13 +26,14 @@ namespace Messagerie
         public Connection connection { get; set; }
         public string id { get; set; }
         public string pwd { get; set; }
-        public List<string> connectedUsers { get; set; }
+        public List<User> connectedUsers { get; set; }
         private Thread ReceiveThread;
         private Thread Load;
         public MainWindow()
         {
             InitializeComponent();
-            connectedUsers = new List<string>();
+            BTEnvoyer.IsEnabled = false;
+            connectedUsers = new List<User>();
             this.Closed += MainWindow_Closed;
             login M_login = new login();
             if (M_login.ShowDialog() == true)
@@ -47,7 +48,6 @@ namespace Messagerie
                 ReceiveThread = new Thread(Receive);
                 ReceiveThread.Start();
                 connection.sendLOGIN(id, pwd);
-                connection.sendASKLIST();
 
             }
             catch (Exception e)
@@ -69,7 +69,8 @@ namespace Messagerie
             while (true)
             {
                 receive += connection.receive();
-                if (receive.EndsWith("\r\n")) {
+                if (receive.EndsWith("\r\n"))
+                {
                     analyseReponse(receive);
                     receive = string.Empty;
                 }
@@ -95,7 +96,7 @@ namespace Messagerie
                             break;
 
                         case "200\r\n":
-                            
+
                             break;
 
                         default:
@@ -124,18 +125,62 @@ namespace Messagerie
 
                 case "LIST":
                     MessageBox.Show(reponse.Split(':').Length.ToString());
-                    for (int i = 1;i< reponse.Split(':').Length-1; i++)
+                    bool isGone;
+                    bool isNew;
+                    for(int a = 0; a < connectedUsers.Count; a++)
                     {
-                        connectedUsers.Add(reponse.Split(':')[i]);
+                        isGone = true;
+                        for (int i = 1; i < reponse.Split(':').Length - 1; i++)
+                        {
+                            if (reponse.Split(':')[i] == connectedUsers[a].id)
+                            {
+                                isGone = false;
+                            }
+                        }
+                        if (isGone)
+                        {
+                            connectedUsers[a].isConnected = false;
+                        }
+                        else
+                        {
+                            connectedUsers[a].isConnected = true;
+                        }
+                    }
+                    for (int i = 1; i < reponse.Split(':').Length - 1; i++)
+                    {
+                        isNew = true;
+                        foreach (User usr in connectedUsers)
+                        {
+                            if (usr.id == reponse.Split(':')[i])
+                            {
+                                isNew = false;
+                            }
+                        }
+                        if (isNew)
+                        {
+                            connectedUsers.Add(new User(reponse.Split(':')[i]));
+                        }
                     }
                     Load = new Thread(LoadUsers);
                     Load.Start();
                     break;
 
                 case "RECIEVE":
-                    this.Dispatcher.Invoke(new Action(() => {
-                        MSGReceive.Text = reponse.Split(':')[2];
+                    foreach(User usr in connectedUsers)
+                    {
+                        if (reponse.Split(':')[1] == usr.id)
+                        {
+                            usr.messages.Add(reponse.Split(':')[2]);
+                        }
+                    }
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        updateMessages();
                     }));
+                    /*this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MSGReceive.Text = reponse.Split(':')[2];
+                    }));*/
                     break;
 
                 default:
@@ -146,16 +191,67 @@ namespace Messagerie
 
         public void LoadUsers()
         {
-            foreach (string usr in connectedUsers)
+            this.Dispatcher.Invoke(new Action(() =>
             {
-                if (usr != id)
+                
+                Users.Items.Clear();
+                foreach (User usr in connectedUsers)
                 {
-                    this.Dispatcher.Invoke(new Action(() =>
+                    if (usr.id != id)
                     {
                         Label label = new Label();
-                        label.Content = usr;
+                        label.Content = usr.id;
                         Users.Items.Add(label);
-                    }));
+                    }
+                }
+            }));
+        }
+
+        private void Users_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Label label = (Label)Users.SelectedItem;
+            if (label != null)
+            {
+                foreach (User usr in connectedUsers)
+                {
+                    if (label.Content.ToString() == usr.id)
+                    {
+                        if (usr.isConnected)
+                        {
+                            BTEnvoyer.IsEnabled = true;
+                        }
+                        else
+                        {
+                            BTEnvoyer.IsEnabled = false;
+                        }
+                        MSGReceive.Items.Clear();
+                        foreach (string msg in usr.messages) {
+                            Label labelMSG = new Label();
+                            labelMSG.Content = msg;
+                            MSGReceive.Items.Add(labelMSG);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void updateMessages()
+        {
+            Label label = (Label)Users.SelectedItem;
+            if (label != null)
+            {
+                foreach (User usr in connectedUsers)
+                {
+                    if (label.Content.ToString() == usr.id)
+                    {
+                        MSGReceive.Items.Clear();
+                        foreach (string msg in usr.messages)
+                        {
+                            Label labelMSG = new Label();
+                            labelMSG.Content = msg;
+                            MSGReceive.Items.Add(labelMSG);
+                        }
+                    }
                 }
             }
         }

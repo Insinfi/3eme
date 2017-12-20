@@ -9,19 +9,19 @@
     <DockPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Width="200">
             <Label>Clients connectés</Label>
-            <ListBox Name="Users" ></ListBox>
+            <ListBox MaxHeight="200"  Name="Users" SelectionChanged="Users_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible" ></ListBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right" >
             <TextBox Name="MSG">
 
             </TextBox>
-            <Button Click="Button_Click">Envoyer</Button>
+            <Button Name="BTEnvoyer" Click="Button_Click">Envoyer</Button>
         </StackPanel>
         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Name="test">
             <Label>Historique de la conversation</Label>
-            <TextBox Name="MSGReceive">
+            <ListBox MaxHeight="200" Name="MSGReceive" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 
-            </TextBox>
+            </ListBox>
         </StackPanel>
     </DockPanel>
 </Window>
