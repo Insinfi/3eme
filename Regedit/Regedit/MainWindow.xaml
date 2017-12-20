@@ -1,0 +1,22 @@
+﻿<Window x:Class="Regedit.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Regedit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button Content="Write" HorizontalAlignment="Left" Margin="115,44,0,0" VerticalAlignment="Top" Width="75" Click="Button_Write"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="323,44,0,0" VerticalAlignment="Top" Width="75" Click="Button_Read"/>
+        <Label Content="User" HorizontalAlignment="Left" Margin="25,41,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="115,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="75" Name="userTB"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="323,69,0,0" VerticalAlignment="Top" Name="userLB"/>
+        <Button Content="Write" HorizontalAlignment="Left" Margin="115,182,0,0" VerticalAlignment="Top" Width="75" Click="Button_Write_Local"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="323,182,0,0" VerticalAlignment="Top" Width="75" Click="Button_Read_Local"/>
+        <Label Content="Local" HorizontalAlignment="Left" Margin="25,179,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="115,207,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="75" x:Name="userTB_Local"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="323,207,0,0" VerticalAlignment="Top" x:Name="userLB_Local"/>
+
+    </Grid>
+</Window>

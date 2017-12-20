@@ -140,7 +140,8 @@ namespace Messagerie_Serveur
                                 {
                                     AddLog(DateTimeOffset.Now.ToString("HH:mm:ss") + "One login : "+ ClientsThreadList.FindLast(fl => fl.tCPclient == MyCLient).UserId + "\n");
                                 }));
-                         
+
+
                             }
                             else
                             {
@@ -154,6 +155,10 @@ namespace Messagerie_Serveur
                             try
                             {
                                 stream.Write(sendbyte, 0, sendbyte.Length);
+                                foreach (Client tmpConnection in ClientsThreadList.FindAll(ctl => ctl.tCPclient != null))
+                                {
+                                    SendList(tmpConnection.tCPclient.GetStream());
+                                }
                             }
                             catch (Exception e)
                             {
@@ -204,14 +209,7 @@ namespace Messagerie_Serveur
                         }
                         else if (Rmessage.StartsWith("ASKLIST"))
                         {
-                            String ListUser = "LIST:";
-                            for(int i = 0; i < ClientsThreadList.Count; i++)
-                            {
-                                ListUser += ClientsThreadList[i].UserId+":";
-                            }
-                            ListUser += "\r\n";
-                            byte[] sendbyte = Encoding.ASCII.GetBytes(ListUser);
-                            stream.Write(sendbyte, 0, sendbyte.Length);
+                                SendList(stream);
                         }
                         else
                         {
@@ -244,6 +242,11 @@ namespace Messagerie_Serveur
                             CountClient.Content = ClientsThreadList.Count-1;
                         }));
                         this.ClientsThreadList.Remove(result);
+
+                        foreach (Client tmpConnection in ClientsThreadList.FindAll(ctl => ctl.tCPclient != null))
+                        {
+                            SendList(tmpConnection.tCPclient.GetStream());
+                        }
                     }
                     else
                     {
@@ -264,6 +267,18 @@ namespace Messagerie_Serveur
 
 
             }
+        }
+
+        private void SendList(NetworkStream stream)
+        {
+            String ListUser = "LIST:";
+            for (int i = 0; i < ClientsThreadList.Count; i++)
+            {
+                ListUser += ClientsThreadList[i].UserId + ":";
+            }
+            ListUser += "\r\n";
+            byte[] sendbyte = Encoding.ASCII.GetBytes(ListUser);
+            stream.Write(sendbyte, 0, sendbyte.Length);
         }
 
         void AddLog(String logs)
